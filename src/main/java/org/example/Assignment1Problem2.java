@@ -3,7 +3,6 @@ package org.example;
 import java.util.Scanner;
 
 public class Assignment1Problem2 {
-
     public static long countDerangements(int n) {
         if (n == 0) return 1;
         if (n == 1) return 0;
