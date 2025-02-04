@@ -2,7 +2,7 @@ package org.example;
 
 import java.util.Scanner;
 
-public class Assignment1Problem1 {
+public class calculateAverageUpdates {
     public static double calculateAverageUpdates(int n) {
         int totalUpdates = n;
         for (int i = 1; i <= n - 1; i++) {
