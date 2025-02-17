@@ -4,33 +4,34 @@ import java.util.*;
 
 class KWayMergeSort {
 
-    public static List<Integer> merge(List<Integer> arr, int k, int partSize, int lowBound, int highBound) {
-        PriorityQueue<Integer> minHeap = new PriorityQueue<>(Comparator.comparingInt(arr::get));
-        List<Integer> tempSorted = new ArrayList<>();
+    public static List<Integer> merge(List<List<Integer>> sortedParts) {
+        PriorityQueue<Element> minHeap = new PriorityQueue<>(Comparator.comparingInt(e -> e.value));
+        List<Integer> result = new ArrayList<>();
 
-        for (int i = 0; i < k; i++) {
-            int startIdx = lowBound + i * partSize;
-            if (startIdx < highBound) {
-                minHeap.offer(startIdx);
+        for (int i = 0; i < sortedParts.size(); i++) {
+            if (!sortedParts.get(i).isEmpty()) {
+                minHeap.offer(new Element(i, 0, sortedParts.get(i).get(0)));
             }
         }
+
         while (!minHeap.isEmpty()) {
-            int ptr = minHeap.poll();
-            tempSorted.add(arr.get(ptr));
+            Element smallest = minHeap.poll();
+            result.add(smallest.value);
 
-            int nextIdx = ptr + 1;
-            if (nextIdx < lowBound + ((ptr - lowBound) / partSize + 1) * partSize && nextIdx < highBound) {
-                minHeap.offer(nextIdx);
+            int nextIndex = smallest.index + 1;
+            if (nextIndex < sortedParts.get(smallest.part).size()) {
+                minHeap.offer(new Element(smallest.part, nextIndex, sortedParts.get(smallest.part).get(nextIndex)));
             }
         }
 
-        return tempSorted;
+        return result;
     }
+
     public static List<Integer> mergeSort(List<Integer> arr, int k, int low, int high) {
+
         if (high - low <= 1) {
             return new ArrayList<>(arr.subList(low, high));
         }
-
         int partSize = (int) Math.ceil((double) (high - low) / k);
         List<List<Integer>> sortedParts = new ArrayList<>();
 
@@ -41,12 +42,7 @@ class KWayMergeSort {
                 sortedParts.add(mergeSort(arr, k, start, end));
             }
         }
-        List<Integer> mergedArray = new ArrayList<>();
-        for (List<Integer> part : sortedParts) {
-            mergedArray.addAll(part);
-        }
-        Collections.sort(mergedArray);
-        return mergedArray;
+        return merge(sortedParts);
     }
 
     public static void main(String[] args) {
@@ -68,5 +64,17 @@ class KWayMergeSort {
         System.out.println("Sorted array: " + sortedArray);
 
         scanner.close();
+    }
+}
+
+class Element {
+    int part;
+    int index;
+    int value;
+
+    Element(int part, int index, int value) {
+        this.part = part;
+        this.index = index;
+        this.value = value;
     }
 }
