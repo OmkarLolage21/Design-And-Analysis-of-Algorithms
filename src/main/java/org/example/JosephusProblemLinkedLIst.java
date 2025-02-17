@@ -4,7 +4,6 @@ public class JosephusProblemLinkedLIst {
         static class Node {
             int player;
             Node next;
-
             Node(int player) {
                 this.player = player;
                 this.next = null;
