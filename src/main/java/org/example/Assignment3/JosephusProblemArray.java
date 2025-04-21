@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Assignment3;
 
 import java.util.*;
 class JosephusProblemArray {
